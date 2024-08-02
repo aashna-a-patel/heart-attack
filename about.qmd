@@ -1,0 +1,41 @@
+---
+html:
+    css: styles.css
+execute: 
+  echo: false
+  message: false
+  warning: false
+---
+Hi, I'm Aashna, a rising junior at WTHS. I created this website through Kane's Data Science Bootcamp.
+
+
+
+## About This Website
+
+This website provides insights into heart attack risk factors using data from Kaggle. We explore how age, cholesterol levels, chest pain types, and maximum heart rate influence heart attack risk.
+
+### Tools and Libraries
+
+- **R Programming Language**: For data analysis and visualization.
+- **Libraries Used:**
+  - `tidyverse`: For data manipulation and visualization.
+  - `primer.data`: For data exploration.
+  - `gganimate`: To create animated plots.
+  - `brms`: For Bayesian regression modeling.
+  - `readr`: For reading data files.
+  - `gtsummary`: For summarizing data.
+  - `transformr`: For animation support.
+  - `ggplot2`: For creating static plots.
+  - `dplyr`: For data manipulation.
+
+### Data Source
+
+The data for this analysis is sourced from Kaggle. You can view and download the dataset [here](https://www.kaggle.com/datasets/rashikrahmanpritom/heart-attack-analysis-prediction-dataset).
+
+### Contact Us
+
+Have questions or feedback? Reach out to us at [your-email@example.com].
+
+---
+
+Thank you for visiting and exploring our heart health insights!

@@ -1,0 +1,93 @@
+---
+execute: 
+  echo: false
+  message: false
+  warning: false
+html:
+    css: styles.css
+cache: true
+---
+
+
+```{r}
+library(tidyverse)
+library(primer.data)
+library(gganimate)
+library(brms)
+library(readr)
+library(gtsummary)
+library(transformr)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+heart <- read_csv(file = "C:/Users/RG/OneDrive/Desktop/heart.csv", col_names = TRUE, show_col_types = FALSE)
+```
+## INTRODUCTION
+To better understand heart attack risk, we look at how age, cholesterol, chest pain types, and heart rate affect the chance of having a heart attack. This analysis uses data from Kaggle. We aim to find these key predictors and see how they interact. Our goal is to improve prevention strategies by answering the following question:
+
+***What are the most significant predictors of heart attacks based on this dataset, and how do these factors interact with each other?***
+
+---------
+
+Gender is a significant factor in heart attack risk. This graph explores the frequency of heart attacks among males and females to identify patterns and disparities.
+```{r}
+ggplot(heart, aes(x = as.factor(sex), fill = as.factor(sex))) +
+  geom_bar() +
+  labs(title = "Frequency of Heart Attacks by Gender",
+       x = "Gender",
+       y = "Count",
+       caption = "Data Source: Kaggle") +
+  scale_fill_manual(values = c("0" = "hotpink", "1" = "cornflowerblue"),
+                    labels = c("0" = "Female", "1" = "Male"),
+                    name = "Gender") +
+  theme_minimal()
+```
+
+This bar graph shows that  males have more than double the frequency of heart attacks compared to females. Understanding this difference helps in developing targeted heart health interventions.
+
+----------------
+
+
+This next animated plot explores the distribution of maximum heart rate achieved across different age groups, revealing important heart health patterns.
+```{r}
+heart <- heart %>%
+  mutate(age_group = cut(age, breaks = c(0, 40, 50, 60, 70, 80, 100), 
+                         labels = c("0-40", "40-50", "50-60", "60-70", "70-80", "80+")))
+
+animated_plot <- ggplot(heart, aes(x = thalachh, fill = age_group)) +
+  geom_histogram(binwidth = 10, position = "identity", alpha = 0.7) +
+  labs(title = "Distribution of Maximum Heart Rate Achieved",
+       x = "Maximum Heart Rate Achieved",
+       y = "Count",
+       fill = "Age Group") +
+  theme_minimal() +
+  transition_states(age_group, transition_length = 2, state_length = 1) +
+  enter_fade() +
+  exit_fade() +
+  labs(subtitle = "Age Group: {closest_state}")
+
+animated_plot
+```
+The plot shows that younger groups (0-40) have higher maximum heart rates, while older groups (60-70, 70-80) have lower rates.
+
+---------
+
+This graph reveals the distribution of cholesterol levels among individuals in the dataset.
+```{r}
+ggplot(heart, aes(x = chol)) +
+  geom_histogram(binwidth = 20, fill = "#90d6b4") +
+  labs(title = "Distribution of Cholesterol Levels",
+       x = "Cholesterol",
+       y = "Frequency", caption = "Data Source: Kaggle") +
+  theme_minimal()
+```
+
+The histogram shows most cholesterol levels cluster between 200 and 240 mg/dL, with fewer instances at higher or lower levels. This distribution suggests a common range of cholesterol levels, which can guide general health recommendations.
+
+
+
+[Learn more about Cholesterol and Heart Health](https://www.heart.org/en/health-topics/cholesterol/about-cholesterol#:~:text=Cholesterol%20circulates%20in%20the%20blood,you%20can%20know%20your%20levels.)
+
+--------

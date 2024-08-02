@@ -1,0 +1,51 @@
+---
+execute: 
+  echo: false
+  message: false
+  warning: false
+title: "Model"
+html:
+    css: styles.css
+cache: true
+---
+
+
+```{r}
+library(tidyverse)
+library(primer.data)
+library(gganimate)
+library(brms)
+library(readr)
+library(gtsummary)
+```
+
+```{r}
+heart <- read_csv(file = "C:/Users/RG/OneDrive/Desktop/heart.csv", col_names = TRUE, show_col_types = FALSE)
+```
+
+```{r}
+head(heart)
+```
+
+
+***Results of call to brm()***
+
+```{r}
+fit <- brm(output ~ .,
+          data = heart,
+          family = bernoulli,
+          refresh = 0,
+          silent = 2,
+          seed = 4,
+          prior = c(set_prior("normal(0, 10)", class = "b"),
+                   set_prior("normal(0, 10)", class = "Intercept")),
+          iter = 2000, warmup = 1000, chains = 4, cores = 4)
+
+summary(fit)
+```
+
+---------
+The model suggests that several factors, including age, sex, chest pain type, blood pressure, cholesterol, and other medical indicators, are significantly associated with the risk of a heart attack.
+---------
+
+

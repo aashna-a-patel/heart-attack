@@ -1,0 +1,144 @@
+---
+html:
+    css: styles.css
+execute: 
+  echo: false
+  message: false
+  warning: false
+cache: true
+---
+
+
+```{r}
+library(tidyverse)
+library(primer.data)
+library(gganimate)
+library(brms)
+library(readr)
+library(gtsummary)
+```
+
+```{r}
+heart <- read_csv(file = "C:/Users/RG/OneDrive/Desktop/heart.csv", col_names = TRUE, show_col_types = FALSE)
+```
+-----
+This page further dives into cholesterol levels, gender differences in heart attack frequency, and maximum heart rate by age. This section highlights key patterns and insights for understanding heart health.
+----------
+
+This scatter plot examines the relationship between age and cholesterol levels, revealing how cholesterol varies with age.
+```{r}
+
+heart <- heart %>%
+  mutate(age_group = cut(age, breaks = c(0, 40, 50, 60, 70, 80, 100), 
+                         labels = c("0-40", "40-50", "50-60", "60-70", "70-80", "80+")))
+
+# Create an animated scatter plot with age groups
+animated_plot <- ggplot(heart, aes(x = age, y = chol, color = age_group)) +
+  geom_point(alpha = 0.6) +
+  labs(title = "Age vs Cholesterol",
+       x = "Age",
+       y = "Cholesterol",
+       caption = "Data Source: Kaggle",
+       color = "Age Group") +
+  theme_minimal() +
+  transition_states(age_group, transition_length = 2, state_length = 1) +
+  enter_fade() +
+  exit_fade() +
+  scale_color_manual(values = c("0-40" = "lightblue", "40-50" = "lightgreen", "50-60" = "orange", "60-70" = "purple", "70-80" = "red", "80+" = "gray"))
+
+# Render the animated plot
+animated_plot
+```
+
+The plot shows that cholesterol levels generally increase with age. This trend indicates a potential link between aging and higher cholesterol, which may be important for assessing heart disease risk as people age.
+
+----------
+
+
+This plot shows how maximum heart rate achieved varies by chest pain type.
+
+```{r}
+ggplot(heart, aes(x = thalachh, fill = as.factor(cp))) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Distribution of Maximum Heart Rate Achieved by Chest Pain Type",
+       x = "Maximum Heart Rate Achieved",
+       y = "Density", caption = "Data Source: Kaggle",
+       fill = "Chest Pain Type") +
+  scale_fill_manual(values = c("1" = "red", "2" = "purple", "3" = "cornflowerblue"),
+                    labels = c("Typical Angina", "Atypical Angina", "Non-Anginal Pain", "Asymptomatic")) +
+  theme_minimal()
+```
+
+Different chest pain types have distinct heart rate patterns. "Typical Angina" tends to show lower heart rates, while other types display broader distributions, indicating varying heart rate responses based on chest pain.
+
+------------
+
+This pie chart displays the distribution of different chest pain types, highlighting the proportion of each type within the dataset.
+```{r}
+cp_counts <- heart %>%
+  group_by(cp) %>%
+  summarise(count = n())
+
+# Add a column for percentages
+cp_counts <- cp_counts %>%
+  mutate(percentage = count / sum(count) * 100)
+
+# Map chest pain type codes to descriptions
+cp_labels <- c(
+  "1" = "Typical Angina",
+  "2" = "Atypical Angina",
+  "3" = "Non-Anginal Pain",
+  "0" = "Asymptomatic"
+)
+
+# Create a pie chart
+ggplot(cp_counts, aes(x = "", y = percentage, fill = as.factor(cp))) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar(theta = "y") +
+  labs(title = "Distribution of Chest Pain Types",
+       fill = "Chest Pain Type",
+       x = NULL,
+       y = NULL, caption = "Data Source: Kaggle") +
+  scale_fill_manual(values = c("red", "pink", "hotpink", "#90d6b4"), 
+                    labels = cp_labels) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) # Remove x-axis text
+```
+The pie chart illustrates the distribution of chest pain types among patients:
+
+- Typical Angina: Pain associated with coronary artery disease, often during exertion.
+
+- Atypical Angina: Unusual pain that may still be linked to coronary artery disease.
+
+- Non-Anginal Pain: Pain unrelated to coronary artery disease, possibly from other causes.
+
+- Asymptomatic: No chest pain experienced, indicating possible lack of symptoms or different issues.
+
+This chart provides insight into the prevalence of different types of chest pain in the dataset.
+
+[Learn more about types of Angina at Cleveland Clinic](https://my.clevelandclinic.org/health/diseases/21489-angina)
+
+---------
+
+## To answer our question...
+
+------
+
+The key predictors of heart attacks in order of significance are... 
+
+-------
+- Age: Generally the most significant predictor, as the risk of heart attack increases with age.
+
+- Cholesterol Levels: High cholesterol is a major risk factor for heart disease.
+
+- Chest Pain Type: Different types of chest pain are associated with varying levels of heart attack risk.
+
+- Maximum Heart Rate: Low maximum heart rate can indicate higher risk, but it’s less direct compared to age and cholesterol.
+
+- Gender: Provides context but is less direct in predicting heart attack risk compared to the other factors.
+
+--------
+
+Recognizing these patterns helps identify high-risk individuals and guide prevention efforts.
+
+--------
