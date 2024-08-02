@@ -8,6 +8,7 @@ execute:
 cache: true
 ---
 
+### ANALYSIS
 
 ```{r}
 library(tidyverse)
@@ -25,7 +26,7 @@ heart <- read_csv(file = "C:/Users/RG/OneDrive/Desktop/heart.csv", col_names = T
 This page further dives into cholesterol levels, gender differences in heart attack frequency, and maximum heart rate by age. This section highlights key patterns and insights for understanding heart health.
 ----------
 
-This scatter plot examines the relationship between age and cholesterol levels, revealing how cholesterol varies with age.
+This scatter plot examines the relationship between age and cholesterol levels.
 ```{r}
 
 heart <- heart %>%
@@ -50,7 +51,7 @@ animated_plot <- ggplot(heart, aes(x = age, y = chol, color = age_group)) +
 animated_plot
 ```
 
-The plot shows that cholesterol levels generally increase with age. This trend indicates a potential link between aging and higher cholesterol, which may be important for assessing heart disease risk as people age.
+The plot shows that cholesterol levels generally increase with age. This trend indicates a potential link between aging and higher cholesterol, which may be important for assessing heart disease risk.
 
 ----------
 
@@ -114,7 +115,7 @@ The pie chart illustrates the distribution of chest pain types among patients:
 
 - Asymptomatic: No chest pain experienced, indicating possible lack of symptoms or different issues.
 
-This chart provides insight into the prevalence of different types of chest pain in the dataset.
+This chart provides insight into the prevalence of different types of chest pain associated with heart attacks.
 
 [Learn more about types of Angina at Cleveland Clinic](https://my.clevelandclinic.org/health/diseases/21489-angina)
 
@@ -142,3 +143,10 @@ The key predictors of heart attacks in order of significance are...
 Recognizing these patterns helps identify high-risk individuals and guide prevention efforts.
 
 --------
+
+
+### Next Steps
+
+- Patients: Monitor risk factors and adhere to prevention strategies.
+- Doctors: Tailor screenings and treatments based on key predictors.
+- Public: Promote awareness and healthy lifestyle changes.

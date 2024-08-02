@@ -9,6 +9,34 @@ execute:
 Hi, I'm Aashna, a rising junior at WTHS. I created this website through Kane's Data Science Bootcamp.
 
 
+<div>
+  <a href="mailto:aashnapatel2008@gmail.com" class="about-btn">
+    Email
+  </a>
+  <a href="https://github.com/aashna-a-patel" class="about-btn">
+    GitHub
+  </a>
+</div>
+
+<style>
+/* Custom styles for buttons */
+.about-btn {
+    background-color: #ff99b4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.about-btn:hover {
+    background-color: #eb547c;
+    color: white;
+}
+</style>
 
 ## About This Website
 
@@ -27,15 +55,13 @@ This website provides insights into heart attack risk factors using data from Ka
   - `transformr`: For animation support.
   - `ggplot2`: For creating static plots.
   - `dplyr`: For data manipulation.
+  - `plotly`: For interactive visualizations.
 
 ### Data Source
 
 The data for this analysis is sourced from Kaggle. You can view and download the dataset [here](https://www.kaggle.com/datasets/rashikrahmanpritom/heart-attack-analysis-prediction-dataset).
 
-### Contact Us
-
-Have questions or feedback? Reach out to us at [your-email@example.com].
-
 ---
 
-Thank you for visiting and exploring our heart health insights!
+Thank you for visiting and exploring Cardiac Clues and Causes!
+

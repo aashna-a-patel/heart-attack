@@ -22,16 +22,22 @@ library(gtsummary)
 ```{r}
 heart <- read_csv(file = "C:/Users/RG/OneDrive/Desktop/heart.csv", col_names = TRUE, show_col_types = FALSE)
 ```
+## MODEL DEFINITION
+
+The Bernoulli regression model is defined as:
+
+$$
+P(Y = 1 \mid X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_n X_n)}}
+$$
+
+Where:
+- $P(Y = 1 \mid X)$ is the probability of a heart attack (binary outcome) given predictors $X$.
+- $\text{logit}^{-1}$ is the logistic function that converts a linear combination of predictors into a probability.
+
+-------------
 
 ```{r}
-head(heart)
-```
-
-
-***Results of call to brm()***
-
-```{r}
-fit <- brm(output ~ .,
+fit <- brm(output ~ age + chol + cp + thalachh + sex,
           data = heart,
           family = bernoulli,
           refresh = 0,
@@ -42,10 +48,47 @@ fit <- brm(output ~ .,
           iter = 2000, warmup = 1000, chains = 4, cores = 4)
 
 summary(fit)
+
 ```
+
+
+### Key Points
+- **Bayesian Inference**: Combines prior knowledge with data to estimate parameter distributions.
+- **Logistic Regression**: Predicts the probability of a heart attack using the logit link function.
+- **Parameters**: Coefficients (\(\beta_i\)) show the change in log odds of heart attack for each unit increase in predictors.
+- **Model Diagnostics**: Assesses convergence (Rhat) and effective sample sizes to ensure the reliability of the estimates.
 
 ---------
 The model suggests that several factors, including age, sex, chest pain type, blood pressure, cholesterol, and other medical indicators, are significantly associated with the risk of a heart attack.
 ---------
+```{r}
+model_summary <- summary(fit)$fixed
 
+# Create a table using gtsummary
+predictor_table <- tbl_regression(
+  fit,
+  exponentiate = TRUE, # To show odds ratios instead of log-odds
+  label = list(
+    age = "Age",
+    sex = "Sex",
+    cp = "Chest Pain Type",
+    trtbps = "Blood Pressure",
+    chol = "Cholesterol",
+    fbs = "Fasting Blood Sugar",
+    restecg = "Resting ECG",
+    thalachh = "Maximum Heart Rate",
+    exng = "Exercise Induced Angina",
+    oldpeak = "Depression Induced by Exercise",
+    slp = "Slope of ST Segment",
+    caa = "Number of Major Vessels",
+    thall = "Thalassemia"
+  )
+)
 
+# Print the table
+predictor_table
+```
+
+The table shows the odds ratios and significance of each predictor, revealing how factors like age and cholesterol influence the risk of heart attacks.
+
+For example, the table might show that for each year increase in age, the odds of having a heart attack increase by 5%, indicating age is a significant risk factor.

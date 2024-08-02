@@ -19,15 +19,19 @@ library(gtsummary)
 library(transformr)
 library(ggplot2)
 library(dplyr)
+library(plotly)
+library(shiny)
 ```
 
 ```{r}
 heart <- read_csv(file = "C:/Users/RG/OneDrive/Desktop/heart.csv", col_names = TRUE, show_col_types = FALSE)
 ```
 ## INTRODUCTION
-To better understand heart attack risk, we look at how age, cholesterol, chest pain types, and heart rate affect the chance of having a heart attack. This analysis uses data from Kaggle. We aim to find these key predictors and see how they interact. Our goal is to improve prevention strategies by answering the following question:
+To better understand heart attack risk, we look at how age, cholesterol, chest pain types, and heart rate affect the chance of having a heart attack. This analysis uses data from Kaggle. We aim to find these key predictors and see how they interact. Our goal is to answer the following question:
 
 ***What are the most significant predictors of heart attacks based on this dataset, and how do these factors interact with each other?***
+
+Answering this question helps  healthcare professionals identify key risk factors and interactions for improved prevention and prediction.
 
 ---------
 
@@ -45,7 +49,9 @@ ggplot(heart, aes(x = as.factor(sex), fill = as.factor(sex))) +
   theme_minimal()
 ```
 
-This bar graph shows that  males have more than double the frequency of heart attacks compared to females. Understanding this difference helps in developing targeted heart health interventions.
+- Males have more than double the frequency of heart attacks compared to females.
+- Highlights gender disparities in heart attack prevalence.
+
 
 ----------------
 
@@ -56,13 +62,19 @@ heart <- heart %>%
   mutate(age_group = cut(age, breaks = c(0, 40, 50, 60, 70, 80, 100), 
                          labels = c("0-40", "40-50", "50-60", "60-70", "70-80", "80+")))
 
-animated_plot <- ggplot(heart, aes(x = thalachh, fill = age_group)) +
-  geom_histogram(binwidth = 10, position = "identity", alpha = 0.7) +
-  labs(title = "Distribution of Maximum Heart Rate Achieved",
-       x = "Maximum Heart Rate Achieved",
-       y = "Count",
-       fill = "Age Group") +
+heart_summary <- heart %>%
+  group_by(age_group) %>%
+  summarize(avg_thalachh = mean(thalachh, na.rm = TRUE))
+
+animated_plot <- ggplot(heart_summary, aes(x = age_group, y = avg_thalachh, fill = avg_thalachh)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_gradient(low = "lightpink", high = "cornflowerblue") + 
+  labs(title = "Average Maximum Heart Rate Achieved by Age Group",
+       x = "Age Group",
+       y = "Average Maximum Heart Rate",
+       fill = "Average Heart Rate") +
   theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
   transition_states(age_group, transition_length = 2, state_length = 1) +
   enter_fade() +
   exit_fade() +
@@ -70,24 +82,28 @@ animated_plot <- ggplot(heart, aes(x = thalachh, fill = age_group)) +
 
 animated_plot
 ```
-The plot shows that younger groups (0-40) have higher maximum heart rates, while older groups (60-70, 70-80) have lower rates.
+- The plot shows that younger groups (0-40) have higher maximum heart rates, while older groups (60-70, 70-80) have lower rates.
+- Important for assessing heart health across different age groups.
 
 ---------
 
-This graph reveals the distribution of cholesterol levels among individuals in the dataset.
+This graph reveals the distribution of cholesterol levels among heart attack victims in the dataset.
 ```{r}
 ggplot(heart, aes(x = chol)) +
   geom_histogram(binwidth = 20, fill = "#90d6b4") +
   labs(title = "Distribution of Cholesterol Levels",
        x = "Cholesterol",
-       y = "Frequency", caption = "Data Source: Kaggle") +
+       y = "Number of Patients", caption = "Data Source: Kaggle") +
   theme_minimal()
 ```
 
-The histogram shows most cholesterol levels cluster between 200 and 240 mg/dL, with fewer instances at higher or lower levels. This distribution suggests a common range of cholesterol levels, which can guide general health recommendations.
+- Cholesterol levels are predominantly between 200 and 240 mg/dL.
+- Indicates common cholesterol levels in the dataset.
+- Guides general health recommendations and interventions.
 
 
 
 [Learn more about Cholesterol and Heart Health](https://www.heart.org/en/health-topics/cholesterol/about-cholesterol#:~:text=Cholesterol%20circulates%20in%20the%20blood,you%20can%20know%20your%20levels.)
 
 --------
+
