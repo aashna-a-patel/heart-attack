@@ -89,6 +89,6 @@ predictor_table <- tbl_regression(
 predictor_table
 ```
 
-The table shows the odds ratios and significance of each predictor, revealing how factors like age and cholesterol influence the risk of heart attacks.
+The table shows the odds, ratios, and significance of each predictor influencing heart attack risk. 
 
-For example, the table might show that for each year increase in age, the odds of having a heart attack increase by 5%, indicating age is a significant risk factor.
+For example, each year increase in age raises the odds of a heart attack by 5%, highlighting age as a significant risk factor.

@@ -23,7 +23,7 @@ library(gtsummary)
 heart <- read_csv(file = "C:/Users/RG/OneDrive/Desktop/heart.csv", col_names = TRUE, show_col_types = FALSE)
 ```
 -----
-This page further dives into cholesterol levels, gender differences in heart attack frequency, and maximum heart rate by age. This section highlights key patterns and insights for understanding heart health.
+This page further highlights key patterns in cholesterol levels and chest pain type,  which is important for understanding heart health.
 ----------
 
 This scatter plot examines the relationship between age and cholesterol levels.
@@ -51,7 +51,8 @@ animated_plot <- ggplot(heart, aes(x = age, y = chol, color = age_group)) +
 animated_plot
 ```
 
-The plot shows that cholesterol levels generally increase with age. This trend indicates a potential link between aging and higher cholesterol, which may be important for assessing heart disease risk.
+- Cholesterol levels increase with age.
+- Important for assessing heart disease risk.
 
 ----------
 
@@ -70,11 +71,12 @@ ggplot(heart, aes(x = thalachh, fill = as.factor(cp))) +
   theme_minimal()
 ```
 
-Different chest pain types have distinct heart rate patterns. "Typical Angina" tends to show lower heart rates, while other types display broader distributions, indicating varying heart rate responses based on chest pain.
+- Different chest pain types show distinct heart rate patterns.
+- “Typical Angina” shows a narrow distribution; other types have broader distributions.
 
 ------------
 
-This pie chart displays the distribution of different chest pain types, highlighting the proportion of each type within the dataset.
+This pie chart displays the distribution of different chest pain types, highlighting each proportion.
 ```{r}
 cp_counts <- heart %>%
   group_by(cp) %>%
@@ -105,7 +107,7 @@ ggplot(cp_counts, aes(x = "", y = percentage, fill = as.factor(cp))) +
   theme_minimal() +
   theme(axis.text.x = element_blank()) # Remove x-axis text
 ```
-The pie chart illustrates the distribution of chest pain types among patients:
+The graph shows the distribution of these four different chest pain types among patients:
 
 - Typical Angina: Pain associated with coronary artery disease, often during exertion.
 
@@ -115,7 +117,7 @@ The pie chart illustrates the distribution of chest pain types among patients:
 
 - Asymptomatic: No chest pain experienced, indicating possible lack of symptoms or different issues.
 
-This chart provides insight into the prevalence of different types of chest pain associated with heart attacks.
+This chart provides insight into the different types of chest pain associated with heart attacks.
 
 [Learn more about types of Angina at Cleveland Clinic](https://my.clevelandclinic.org/health/diseases/21489-angina)
 

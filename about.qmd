@@ -16,6 +16,9 @@ Hi, I'm Aashna, a rising junior at WTHS. I created this website through Kane's D
   <a href="https://github.com/aashna-a-patel" class="about-btn">
     GitHub
   </a>
+  <a href="https://bootcamp.davidkane.info/" class="about-btn">
+    Course Page
+  </a>
 </div>
 
 <style>
