@@ -1,0 +1,27 @@
+project:
+  type: website
+
+website:
+  title: "CARDIAC CLUES AND CAUSES"
+  navbar:
+    left:
+      - href: index.qmd
+        text: HOME
+      - href: plot1.qmd
+        text: ANALYSIS
+      - href: analysis.qmd
+        text: DISTRIBUTION
+      - href: model.qmd
+        text: MODEL
+      - href: about.qmd
+        text: ABOUT
+      
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+
