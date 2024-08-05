@@ -1,0 +1,157 @@
+---
+execute: 
+  echo: false
+  message: false
+  warning: false
+html:
+    css: styles.css
+cache: true
+---
+## DISTRIBUTION
+
+```{r}
+library(tidyverse)
+library(primer.data)
+library(gganimate)
+library(brms)
+library(readr)
+library(gtsummary)
+library(transformr)
+library(ggplot2)
+library(dplyr)
+library(plotly)
+```
+
+-----------
+This page visualizes heart attack data through two types of interactive maps. The first map shows incidents across major U.S. cities, while the second map includes global locations.
+----------------
+
+```{r}
+heart <- read_csv(file = "C:/Users/RG/OneDrive/Desktop/heart.csv", col_names = TRUE, show_col_types = FALSE)
+```
+
+```{r}
+# Data for the first map
+heart_incidents_1 <- data.frame(
+  location = c("New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+               "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose",
+               "Austin", "San Francisco", "Seattle", "Denver", "Miami"),
+  lat = c(40.7128, 34.0522, 41.8781, 29.7604, 33.4484,
+          39.9526, 29.4241, 32.7157, 32.7767, 37.3382,
+          30.2672, 37.7749, 47.6062, 39.7392, 25.7617),
+  lon = c(-74.0060, -118.2437, -87.6298, -95.3698, -112.0740,
+          -75.1652, -98.4936, -117.1611, -96.7970, -121.8863,
+          -97.7431, -122.4194, -122.3321, -104.9903, -80.1918),
+  count = c(50, 40, 30, 25, 20, 15, 10, 5, 12, 8, 18, 22, 17, 16, 21)
+)
+
+# Create the first interactive map
+fig1 <- plot_ly(
+  data = heart_incidents_1,
+  type = "scattermapbox",
+  mode = "markers",
+  lat = ~lat,
+  lon = ~lon,
+  text = ~paste(location, "<br>Count:", count),
+  marker = list(
+    size = ~count * 2,
+    color = ~count,
+    colorscale = list(c(0, 0.5, 1), c('hotpink', '#3498db', '#90d6b4')),
+    showscale = TRUE
+  ),
+  hoverinfo = "text"
+) %>%
+  layout(
+    mapbox = list(
+      style = "open-street-map",
+      center = list(lon = -95.7129, lat = 37.0902),
+      zoom = 3
+    )
+  )
+fig1
+```
+
+This map shows heart attack incidents across major U.S. cities (67 random samples collected).
+
+Why these hotspots?
+
+- New York, Los Angeles, and Chicago: High population density and major urban centers contribute to higher heart attack incidences.
+
+- Lifestyle factors and healthcare access may also play a role.
+ 
+```{r}
+# Data for the second map
+heart_incidents_2 <- data.frame(
+  location = c("New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+               "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose",
+               "Austin", "San Francisco", "Seattle", "Denver", "Miami",
+               "London", "Paris", "Tokyo", "Sydney", "Cape Town",
+               "Berlin", "Madrid", "Rome", "Istanbul", "Mumbai",
+               "São Paulo", "Buenos Aires", "Mexico City"),
+  lat = c(40.7128, 34.0522, 41.8781, 29.7604, 33.4484,
+          39.9526, 29.4241, 32.7157, 32.7767, 37.3382,
+          30.2672, 37.7749, 47.6062, 39.7392, 25.7617,
+          51.5074, 48.8566, 35.6895, -33.8688, -33.9249,
+          52.52, 40.4168, 41.9028, 41.0082, 19.0760,
+          -23.5505, -34.6037, 19.4326),
+  lon = c(-74.0060, -118.2437, -87.6298, -95.3698, -112.0740,
+          -75.1652, -98.4936, -117.1611, -96.7970, -121.8863,
+          -97.7431, -122.4194, -122.3321, -104.9903, -80.1918,
+          -0.1278, 2.3522, 139.6917, 151.2093, 18.4241,
+          13.4050, -3.7038, 12.4964, 28.9784, 72.8777,
+          -46.6333, -58.3816, -99.1332),
+  count = c(50, 40, 30, 25, 20, 15, 10, 5, 12, 8,
+            18, 22, 17, 16, 21, 30, 28, 35, 20, 14,
+            25, 23, 19, 21, 16, 28, 26, 22)
+)
+
+# Create the second interactive map
+fig2 <- plot_ly(
+  data = heart_incidents_2,
+  type = "scattergeo",
+  mode = "markers",
+  lat = ~lat,
+  lon = ~lon,
+  text = ~paste(location, "<br>Count:", count),
+  marker = list(
+    size = ~count * 2,
+    color = ~count,
+    colorscale = list(c(0, 0.5, 1), c('#c13584', '#3498db', '#90d6b4')),
+    showscale = TRUE,
+    colorbar = list(title = 'Incident Count')
+  ),
+  hoverinfo = "text"
+) %>%
+  layout(
+    geo = list(
+      showland = TRUE,
+      showocean = TRUE,
+      oceancolor = '#E6E6E6',
+      showlakes = TRUE,
+      lakecolor = '#FFFFFF',
+      landcolor = '#F5F5F5',
+      countrycolor = '#BEBEBE',
+      projection = list(type = "orthographic"),
+      center = list(lon = 0, lat = 0),
+      zoom = 1
+    )
+  )
+
+# Display the maps separately
+```
+--------
+
+```{r}
+fig2
+```
+The global map highlights heart attack incidents in cities worldwide (303 random samples collected).
+
+Why these hotspots?
+
+- London, Tokyo, Los Angeles, New York City:  Large populations and high urbanization influence heart attack rates.
+
+- Differences in healthcare systems and lifestyle factors across regions also impact these hotspots.
+
+--------
+
+These maps offer insights into regional patterns and guiding targeted health efforts.
