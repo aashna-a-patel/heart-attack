@@ -1,5 +1,5 @@
 # heart-attack
-Heart Attack Risk Analysis
+
 Introduction
 This project analyzes heart attack risk factors using Kaggle data to understand how age, cholesterol, chest pain types, and heart rate influence heart attack risk.
 
